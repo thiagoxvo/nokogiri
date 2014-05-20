@@ -177,6 +177,14 @@ module Nokogiri
         assert_send [elapsed_time, :<, time_limit], "XPath is taking too long"
       end
 
+      # issue #1109 (jruby impl's xpath() cache not being cleared )
+      def test_xpath_results_cache_should_get_cleared
+        doc = Nokogiri::HTML("<html><div selected></div></html>")
+        element = doc.at_xpath('//div[@selected]') 
+        element.remove_attribute('selected')
+        assert_nil doc.at_xpath('//div[@selected]')
+      end
+
       def test_custom_xpath_function_returns_string
         if Nokogiri.uses_libxml?
           result = @xml.xpath('thing("asdf")', @handler)
