@@ -48,6 +48,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import nokogiri.internals.IgnoreSchemaErrorsErrorHandler;
 import nokogiri.internals.SchemaErrorHandler;
 import nokogiri.internals.XmlDomParserContext;
 
@@ -96,6 +97,7 @@ public class XmlSchema extends RubyObject {
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         SchemaResourceResolver resourceResolver = new SchemaResourceResolver(currentDir, scriptFileName, null);
         schemaFactory.setResourceResolver(resourceResolver); 
+        schemaFactory.setErrorHandler(new IgnoreSchemaErrorsErrorHandler());
         return schemaFactory.newSchema(source);
     }
     
